@@ -1,19 +1,40 @@
 import React, { useState } from 'react';
 import ErrorCard from '../components/ErrorCard';
-// import axios from 'axios';
-// import { Redirect } from 'react-router-dom';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 export default function NewBounty(props) {
+  const [bountyCreated, setBountyCreated] = useState(false);
   const [error, setError] = useState(null);
+  const [inputs, setInputs] = useState({
+    name: '',
+    wantedFor: ''
+  })
   
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('New bounty!')
+    console.log(inputs)
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/bounties`, inputs)
+      .then(response => {
+        if (response.status === 200) {
+          console.log('🦋')
+          // Set a variable so we can redirect to the bounties page
+          setBountyCreated(true)
+        } else {
+          setError(response.statusText)
+        }
+      })
+      .catch(err => setError(err.message))
   }
 
   const handleInputChange = e => {
     e.persist();
     console.log(`Making a change to ${e.target.name}`)
+    setInputs({...inputs, [e.target.name]: e.target.value})
+  }
+
+  if (bountyCreated) {
+    return <Redirect to='/bounties' />
   }
 
   return (
