@@ -33,9 +33,7 @@ export default function NewBounty(props) {
     setInputs({...inputs, [e.target.name]: e.target.value})
   }
 
-  if (bountyCreated) {
-    return <Redirect to='/bounties' />
-  }
+  if (bountyCreated) return <Redirect to={`/bounties`} />
 
   return (
     <div className="center-flex-column">
