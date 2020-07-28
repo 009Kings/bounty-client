@@ -9,7 +9,7 @@ export default function DeleteButton(props) {
         if (response.status === 200) {
           console.log(response.data.message)
           // call refresh with true
-          props.refresh(true);
+          props.toggleRefresh(!props.refresh);
         } else {
           props.setError(response.statusText)
         }

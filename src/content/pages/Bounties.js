@@ -7,14 +7,13 @@ import axios from 'axios';
 export default function Bounties(props) {
   const [bounties, setBounties] = useState([]);
   const [error, setError] = useState(null);
-  const [refresh, setRefresh] = useState(false);
+  const [toggleRefresh, setToggleRefresh] = useState(false);
 
   // call to API to get all bounties
   useEffect(()=>{
     // Call the server
     axios.get(`${process.env.REACT_APP_SERVER_URL}/bounties`)
     .then(response => {
-      setRefresh(false);
       // check response is good
       if (response.status === 200) {
         // set the bounties
@@ -28,13 +27,13 @@ export default function Bounties(props) {
         console.log('💔')
         setError(err.message)
       })
-  }, [])
+  }, [toggleRefresh])
 
   let bountyList = bounties.length < 1 ? 
     <h3>There are no bounties</h3> :
     bounties.map((bounty, i) => (
       // TODO: pass bounty deets
-      <BountyCard key={`bounty-${i}`} {...bounty} setError={setError} refresh={setRefresh} />
+      <BountyCard key={`bounty-${i}`} {...bounty} setError={setError} toggleRefresh={setToggleRefresh} refresh={toggleRefresh} />
     ))
 
   return (
